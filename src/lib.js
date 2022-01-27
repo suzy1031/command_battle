@@ -1,6 +1,5 @@
 class Friend {
-  constructor(name, maxHp, offense, speed, herb, herbPower)
-  {
+  constructor(name, maxHp, offense, speed, herb, herbPower) {
     this.name = name;
     this.type = 'friend';
     this.maxHp = maxHp;
@@ -14,9 +13,23 @@ class Friend {
     this.target = '';
   }
 
+  getMainParameter() {
+    return (
+      '<b>' +
+      this.name +
+      '</b><br>' +
+      '体力' +
+      this.hp +
+      '<br>' +
+      '薬草' +
+      this.herb +
+      '<br>'
+    );
+  }
+
   action() {
     if (this.hp > 0) {
-      switch(this.command) {
+      switch (this.command) {
         case 'enemyCommand':
           this.attack();
           break;
@@ -37,12 +50,19 @@ class Friend {
         this.target.hp = 0;
       }
 
-      Message.printMessage(this.name + 'の攻撃<br>' + this.target.name + 'に' + this.offense + 'のダメージを与えた!<br>');
-
+      Message.printMessage(
+        this.name +
+          'の攻撃<br>' +
+          this.target.name +
+          'に' +
+          this.offense +
+          'のダメージを与えた!<br>'
+      );
     } else {
-      Message.printMessage(this.name + 'の攻撃・・・<br>' + this.target.name + 'は倒れている<br>');
+      Message.printMessage(
+        this.name + 'の攻撃・・・<br>' + this.target.name + 'は倒れている<br>'
+      );
     }
-
   }
 
   recovery() {
@@ -52,7 +72,9 @@ class Friend {
     }
 
     if (this.maxHp == this.hp) {
-      Message.printMessage(this.name + 'は薬草を・・・<br>これ以上回復できない!<br>');
+      Message.printMessage(
+        this.name + 'は薬草を・・・<br>これ以上回復できない!<br>'
+      );
       return;
     }
 
@@ -66,13 +88,14 @@ class Friend {
 
     --this.herb;
 
-    Message.printMessage(this.name + '薬草を飲んだ<br>体力が' + heal + '回復した<br>');
+    Message.printMessage(
+      this.name + '薬草を飲んだ<br>体力が' + heal + '回復した<br>'
+    );
   }
 }
 
 class Enemy {
-  constructor(name, hp, offense, speed, path)
-  {
+  constructor(name, hp, offense, speed, path) {
     this.name = name;
     this.type = 'enemy';
     this.hp = hp;
@@ -84,14 +107,13 @@ class Enemy {
 
   action() {
     if (this.hp > 0) {
-      this.attach();
+      this.attack();
     }
   }
 }
 
 class Troll extends Enemy {
-  constructor(name, hp, offense, speed, path)
-  {
+  constructor(name, hp, offense, speed, path) {
     super(name, hp, offense, speed, path);
   }
 
@@ -103,21 +125,29 @@ class Troll extends Enemy {
       f.hp = 0;
     }
 
-    if(f.liveFlag) {
-      Message.printMessage(this.name + 'が襲いかかってきた<br>' + f.name + 'の攻撃・・・<br>' + f.name + 'は倒れている<br>');
+    if (f.liveFlag) {
+      Message.printMessage(
+        this.name +
+          'が襲いかかってきた<br>' +
+          f.name +
+          'の攻撃・・・<br>' +
+          f.name +
+          'は倒れている<br>'
+      );
     }
   }
 }
 
 class Dragon extends Enemy {
-  constructor(name, hp, offense, speed, path)
-  {
+  constructor(name, hp, offense, speed, path) {
     super(name, hp, offense, speed, path);
   }
 
   attack() {
     if (getRandomIntInclusive(0, 4) === 4) {
-      Message.printMessage('ドラゴンは<br>グフッグフッと咳き込んでいる・・・<br>');
+      Message.printMessage(
+        'ドラゴンは<br>グフッグフッと咳き込んでいる・・・<br>'
+      );
       return;
     }
 
@@ -125,21 +155,29 @@ class Dragon extends Enemy {
 
     f.hp -= this.offense;
 
-    if(f.hp < 0) {
+    if (f.hp < 0) {
       f.hp = 0;
     }
 
-    if(f.liveFlag) {
-      Message.printMessage(this.name + 'は炎を吹いた<br>' + f.name + 'は' + this.offense + 'のダメージを受けた!<br>');
+    if (f.liveFlag) {
+      Message.printMessage(
+        this.name +
+          'は炎を吹いた<br>' +
+          f.name +
+          'は' +
+          this.offense +
+          'のダメージを受けた!<br>'
+      );
     } else {
-      Message.printMessage(this.name + 'の攻撃・・・<br>' + f.name + 'は倒れている<br>');
+      Message.printMessage(
+        this.name + 'の攻撃・・・<br>' + f.name + 'は倒れている<br>'
+      );
     }
   }
 }
 
 class GameManage {
-  constructor()
-  {
+  constructor() {
     this.actionOrder();
     this.showParameter();
     this.showEnemyImage();
@@ -147,39 +185,103 @@ class GameManage {
   }
 
   actionOrder() {
-    characters.sort(function(a,b) {
+    characters.sort(function (a, b) {
       return b.speed - a.speed;
-    })
+    });
   }
 
   showParameter() {
     parameterView.innerHTML = '';
 
-    for(let c of characters) {
+    for (let c of characters) {
       if (c.type === 'friend') {
-        parameterView.innerHTML += '<div class="parameter">' + c.getMainParameter() + '</div>';
+        parameterView.innerHTML +=
+          '<div class="parameter">' + c.getMainParameter() + '</div>';
       }
     }
 
     for (let c of characters) {
       if (c.type === 'enemy') {
-        console.log(c.name + " " + c.hp);
+        console.log(c.name + ' ' + c.hp);
       }
     }
   }
 
   showEnemyImage() {
     let i = 0;
-    for(let c of characters) {
+    for (let c of characters) {
       if (c.type === 'enemy') {
-        enemyImageView.innerHTML += '<img id="enemyImage' + characters.indexOf(c) + '" src="' + c.path
-        + '" style="position:absolute; left:' + (160 * i++) +'px; bottom: 0px">';
+        enemyImageView.innerHTML +=
+          '<img id="enemyImage' +
+          characters.indexOf(c) +
+          '" src="' +
+          c.path +
+          '" style="position:absolute; left:' +
+          160 * i++ +
+          'px; bottom: 0px">';
       }
     }
   }
 
   showFirstMessage() {
     Message.printMessage('モンスターが現れた<br>');
+  }
+
+  removeDiedCharacter() {
+    for (let c of characters) {
+      if (c.hp <= 0 && c.liveFlag === true) {
+        Message.addMessage(c.name + 'は倒れた<br>');
+
+        c.liveFlag = false;
+
+        if (c.type === 'enemy') {
+          document.getElementById('enemyImage' + character.indexOf(c).remove());
+        }
+      }
+    }
+  }
+
+  judgeWinLose() {
+    if (!isAliveByType('friend')) {
+      Message.addMessage('全滅しました・・・<br>');
+      return 'lose';
+    }
+
+    if (!isAliveByType('enemy')) {
+      Message.addMessage('モンスターをやっつけた<br>');
+      return 'win';
+    }
+
+    return 'none';
+  }
+
+  async battle() {
+    let winLose = 'none';
+    for (let c of characters) {
+      if (c.liveFlag === false) {
+        continue;
+      }
+
+      await sleep(900);
+
+      c.action();
+
+      await sleep(900);
+
+      this.showParameter();
+
+      await sleep(900);
+
+      this.removeDiedCharacter();
+
+      await sleep(300);
+
+      winLose = this.judgeWinLose();
+      if (winLose === 'win' || winLose === 'lose') {
+        return false;
+      }
+    }
+    return true;
   }
 }
 
@@ -207,7 +309,7 @@ function searchCharacterByName(name) {
   let characterElementNum = [];
 
   let i = 0;
-  for(let c of characters) {
+  for (let c of characters) {
     if (c.name === name) {
       characterElementNum.push(i);
     }
@@ -237,6 +339,12 @@ function searchLivedCharacterRandom(type) {
   let randomValue = getRandomIntInclusive(0, livedCharacter.length - 1);
 
   return livedCharacter[randomValue];
+}
+
+function sleep(ms) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, ms);
+  });
 }
 
 function getRandomIntInclusive(min, max) {

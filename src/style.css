@@ -1,10 +1,10 @@
 body {
   background-color: #333333;
-  color : #FFFFFF;
+  color: #ffffff;
   width: 700px;
   text-align: center;
   margin-right: auto;
-  margin-left : auto;
+  margin-left: auto;
 }
 
 div {
@@ -21,6 +21,13 @@ div {
   border: 3px solid;
   border-color: white;
   border-radius: 6px;
+}
+
+/* パラメータ（各キャラクター） */
+.parameter {
+  display: inline-block;
+  width: 100px;
+  vertical-align: top;
 }
 
 /* 敵画像ビュー */
