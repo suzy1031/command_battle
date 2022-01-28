@@ -69,3 +69,35 @@ div {
   border-color: white;
   border-radius: 6px;
 }
+
+/* 各コマンド */
+#attackCommand:hover,
+#recoveryCommand:hover,
+.enemyCommand:hover {
+  cursor: pointer;
+}
+
+/* 各コマンド */
+#attackCommand::before,
+#recoveryCommand::before,
+.enemyCommand::before {
+  /* 透明な▶を各コマンドの左に追加 */
+  content: '▶';
+  opacity: 0;
+}
+
+/* 各コマンド */
+#attackCommand:hover::before,
+#recoveryCommand:hover::before,
+.enemyCommand:hover::before {
+  /* マウスオーバーで▶を表示 */
+  opacity: 100;
+}
+
+/* コマンドの味方の名前 */
+#friendName::before {
+  /* インデント調整のため
+     透明な▶を名前の左に追加 */
+  content: '▶';
+  opacity: 0;
+}
